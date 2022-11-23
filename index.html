@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
+    <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="./css/estilos.css">
+    <script>
+
+        async function Movies_popular() {
+            let url = 'https://api.themoviedb.org/3/movie/popular?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-VE&page=1';
+            const result = await $.ajax({
+                url: url,
+                type: 'POST',
+            });
+
+            $('#Popular_movies').html('');
+            for (let i = 0; i < result.results.length; i++) {
+
+
+                $('#Popular_movies').append(`      
+                    <div class="max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+                        <a href="#">
+                            <img class="rounded-t-lg" src="https://image.tmdb.org/t/p/w500/${result.results[i].poster_path}" alt="" />
+                        </a>
+                        <div class="p-5">
+                            <a href="#">
+                                <h5 class="mb-2 text-xl font-bold tracking-tight text-white">${result.results[i].original_title}</h5>
+                            </a>
+                            <div class="flex items-center">
+                                <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                <p class="ml-2 text-sm font-bold text-white">${result.results[i].vote_average}</p>
+                                <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                                <a href="#" class="text-sm font-medium  underline hover:no-underline text-white">${result.results[i].vote_count} reviews</a>
+                                </div>
+                          </div>
+                    </div>
+                `);
+
+            }
+
+
+
+            return result
+        }
+
+        async function Movies_masvaloraciones() {
+            let url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-VE&page=1';
+            const result = await $.ajax({
+                url: url,
+                type: 'GET',
+            });
+            $('#Movies_recomendaciones  ').html('');
+            for (let i = 0; i < result.results.length; i++) {
+                $('#Movies_recomendaciones  ').append(`      
+                    <div class="max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+                        <a href="#">
+                            <img class="rounded-t-lg" src="https://image.tmdb.org/t/p/w500/${result.results[i].poster_path}" alt="" />
+                        </a>
+                        <div class="p-5">
+                            <a href="#">
+                                <h5 class="mb-2 text-xl font-bold tracking-tight text-white">${result.results[i].original_title}</h5>
+                            </a>
+                            <div class="flex items-center">
+                                <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                <p class="ml-2 text-sm font-bold text-white">${result.results[i].vote_average}</p>
+                                <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                                <a href="#" class="text-sm font-medium  underline hover:no-underline text-white">${result.results[i].vote_count} reviews</a>
+                                </div>
+                          </div>
+                    </div>
+                `);
+            }
+            return result
+        }
+        let category = [];
+        async function Category() {
+            let valor = await $.ajax({
+                url: 'http://api.themoviedb.org/3/genre/list?api_key=22be462e6d3de1dbab03d1ca50847b5a',
+                type: 'GET',
+            });
+
+            category = valor.genres;
+        }
+        $(document).ready(function () {
+            Movies_popular();
+            Movies_masvaloraciones();
+            Category();
+        });
+
+    </script>
+    <title>PelisPlus</title>
+</head>
+
+
+<body class="bg-slate-800">
+    <nav class="bg-slate-700 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
+        <div class="container flex flex-wrap items-center justify-between mx-auto">
+            <a href="https://flowbite.com/" class="flex items-center">
+                <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-9" alt="PelisPlus Logo" />
+                <span class="self-center text-xl font-semibold whitespace-nowrap  text-white">PelisPlus</span>
+            </a>
+            <div class="flex md:order-2">
+                <button type="button" data-collapse-toggle="navbar-search" aria-controls="navbar-search"
+                    aria-expanded="false"
+                    class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1">
+                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="sr-only">Search</span>
+                </button>
+                <div class="relative hidden md:block">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="sr-only">Search icon</span>
+                    </div>
+                    <input type="text" id="search-navbar"
+                        class="block w-full p-2 pl-10 text-sm  border  rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Search...">
+                </div>
+                <button data-collapse-toggle="navbar-search" type="button"
+                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    aria-controls="navbar-search" aria-expanded="false">
+                    <span class="sr-only">Open menu</span>
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-search">
+                <div class="relative mt-3 md:hidden">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="search-navbar"
+                        class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Search...">
+                </div>
+                <ul
+                    class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-slate-700 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li>
+                        <a href="#"
+                            class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                            aria-current="page">Home</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class=" bg-slate-900 rounded-lg  gap-4 px-2 sm:px-4 py-2.5">
+        <h1 class="px-2 sm:px-4 py-2.5 text-white font-bold text-center  text-4xl py-5">Tendencia</h1>
+
+        <div class="grid lg:grid-cols-8 sm:grid-cols-4 grid-cols-1  justify-items-center gap-4 px-2 sm:px-4 py-2.5 rounded-lg"
+            id="Popular_movies">
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+  
+    <div class="bg-slate-900 rounded-lg gap-4 px-2 sm:px-4 py-2.5">
+        <h1 class="px-2 sm:px-4 py-2.5 text-white font-bold text-center  text-4xl py-5">Tendencia</h1>
+
+        <div class="grid lg:grid-cols-8 sm:grid-cols-4 grid-cols-1  justify-items-center gap-4 px-2 sm:px-4 py-2.5 rounded-lg"
+            id="Movies_recomendaciones">
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+            <div
+                class="max-w-sm hover:scale-105 ease-out duration-300 w-full  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+
+                <div role="status" class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 ">
+                    <div class="flex justify-center items-center w-full h-72 bg-gray-300 rounded dark:bg-gray-700">
+                        <svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                            fill="currentColor" viewBox="0 0 640 512">
+                            <path
+                                d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z">
+                            </path>
+                        </svg>
+                    </div>
+
+
+                </div>
+
+                <div class="p-5">
+
+                    <div role="status" class="max-w-sm animate-pulse">
+
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+</body>
+
+
+
+</html>
