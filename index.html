@@ -5,98 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
-    <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <link rel="stylesheet" href="./css/estilos.css">
+    <script src="js/tailwind.js"></script>
+    <link rel="stylesheet" href="./css/flowbite.min.css" />
+
+    <script src="./js/jquery.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/index.js"></script>
+    <script defer src="./js/alpine.js"></script>
     <script>
-
-        async function Movies_popular() {
-            let url = 'https://api.themoviedb.org/3/movie/popular?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-VE&page=1';
-            const result = await $.ajax({
-                url: url,
-                type: 'POST',
-            });
-
-            $('#Popular_movies').html('');
-            for (let i = 0; i < result.results.length; i++) {
-
-
-                $('#Popular_movies').append(`      
-                    <div class="max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
-                        <a href="#">
-                            <img class="rounded-t-lg" src="https://image.tmdb.org/t/p/w500/${result.results[i].poster_path}" alt="" />
-                        </a>
-                        <div class="p-5">
-                            <a href="#">
-                                <h5 class="mb-2 text-xl font-bold tracking-tight text-white">${result.results[i].original_title}</h5>
-                            </a>
-                            <div class="flex items-center">
-                                <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                <p class="ml-2 text-sm font-bold text-white">${result.results[i].vote_average}</p>
-                                <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
-                                <a href="#" class="text-sm font-medium  underline hover:no-underline text-white">${result.results[i].vote_count} reviews</a>
-                                </div>
-                          </div>
-                    </div>
-                `);
-
-            }
-
-
-
-            return result
-        }
-
-        async function Movies_masvaloraciones() {
-            let url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-VE&page=1';
-            const result = await $.ajax({
-                url: url,
-                type: 'GET',
-            });
-            $('#Movies_recomendaciones  ').html('');
-            for (let i = 0; i < result.results.length; i++) {
-                $('#Movies_recomendaciones  ').append(`      
-                    <div class="max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
-                        <a href="#">
-                            <img class="rounded-t-lg" src="https://image.tmdb.org/t/p/w500/${result.results[i].poster_path}" alt="" />
-                        </a>
-                        <div class="p-5">
-                            <a href="#">
-                                <h5 class="mb-2 text-xl font-bold tracking-tight text-white">${result.results[i].original_title}</h5>
-                            </a>
-                            <div class="flex items-center">
-                                <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                <p class="ml-2 text-sm font-bold text-white">${result.results[i].vote_average}</p>
-                                <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
-                                <a href="#" class="text-sm font-medium  underline hover:no-underline text-white">${result.results[i].vote_count} reviews</a>
-                                </div>
-                          </div>
-                    </div>
-                `);
-            }
-            return result
-        }
-        let category = [];
-        async function Category() {
-            let valor = await $.ajax({
-                url: 'http://api.themoviedb.org/3/genre/list?api_key=22be462e6d3de1dbab03d1ca50847b5a',
-                type: 'GET',
-            });
-
-            category = valor.genres;
-        }
         $(document).ready(function () {
-            Movies_popular();
-            Movies_masvaloraciones();
-            Category();
+            inicio();
+            async function inicio() {
+ 
+                await Movies_popular();
+                await Movies_masvaloraciones();
+                await Category();
+                
+            }
         });
-
     </script>
     <title>PelisPlus</title>
 </head>
-
 
 <body class="bg-slate-800">
     <nav class="bg-slate-700 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
@@ -162,15 +91,15 @@
                     <li>
                         <a href="#"
                             class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-                            aria-current="page">Home</a>
+                            aria-current="page">Inicio</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contacto</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                            class="block py-2 pl-3 pr-4 text-gray-500 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Servicios</a>
                     </li>
                 </ul>
             </div>
@@ -178,8 +107,45 @@
     </nav>
 
 
+
+    <!-- Main modal -->
+    <div id="prueba" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full">
+        <div class="relative w-full lg:w-6/12 h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-slate-800 rounded-lg shadow dark:bg-gray-700">
+                <button onclick="modal.hide()" type="button"
+                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-modal-toggle="crypto-modal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span  class="sr-only">Close modal</span>
+                </button>
+                <!-- Modal header -->
+                <div class="py-4 px-6 rounded-t border-b bg-slate-700 ">
+                    <h3 id="titulo" class="text-base font-semibold  lg:text-xl text-white">
+                        
+                    </h3>
+                </div>
+                <!-- Modal body -->
+                <div class="p-6 flex flex-col gap-4">
+                    <div id="video"></div>
+                    <div id="descripcion" class="text-white font-semibold "></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class=" bg-slate-900 rounded-lg  gap-4 px-2 sm:px-4 py-2.5">
-        <h1 class="px-2 sm:px-4 py-2.5 text-white font-bold text-center  text-4xl py-5">Tendencia</h1>
+        <h1 class="px-2 sm:px-4 py-2.5 text-white font-bold text-center  text-4xl py-5"
+            data-modal-toggle="crypto-modal">Tendencia</h1>
 
         <div class="grid lg:grid-cols-8 sm:grid-cols-4 grid-cols-1  justify-items-center gap-4 px-2 sm:px-4 py-2.5 rounded-lg"
             id="Popular_movies">
@@ -776,7 +742,7 @@
         </div>
     </div>
 
-  
+
     <div class="bg-slate-900 rounded-lg gap-4 px-2 sm:px-4 py-2.5">
         <h1 class="px-2 sm:px-4 py-2.5 text-white font-bold text-center  text-4xl py-5">Los mas Valorados</h1>
 
@@ -1375,6 +1341,33 @@
         </div>
     </div>
 
+
+    <script src="./js/flowbite.js"></script>
+    <script>
+
+        // set the modal menu element
+        const targetEl = document.getElementById('prueba');
+
+        // options with default values
+        const options = {
+            placement: 'center',
+            backdrop: 'dynamic',
+            backdropClasses: 'bg-black bg-opacity-90 dark:bg-opacity-80 fixed inset-0 z-40',
+            onHide: () => {
+                clear_modal();
+            },
+            onShow: () => {
+                console.log('modal is shown');
+            },
+            onToggle: () => {
+                console.log('modal has been toggled');
+            }
+        };
+
+        let modal = new Modal(targetEl, options);
+
+        console.log(modal);
+    </script>
 
 </body>
 
