@@ -1,5 +1,5 @@
 function Movies_popular() {
-    let url = 'https://api.themoviedb.org/3/movie/popular?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-VE&page=1';
+    let url = 'https://api.themoviedb.org/3/movie/now_playing?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-VE&page=1';
     return new Promise(async (resolve, reject) => {
         const result = await $.ajax({
             url: url,
@@ -8,7 +8,7 @@ function Movies_popular() {
         $('#Popular_movies').html('');
         for (let i = 0; i < result.results.length; i++) {
             $('#Popular_movies').append(`      
-            <div   class="max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+            <div   class="cursor-pointer max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
                 <a onclick="contenido_modal('${result.results[i].id}')">
                     <img  class="rounded-t-lg" src="https://image.tmdb.org/t/p/w500/${result.results[i].poster_path}" alt="" />
                 </a>
@@ -41,7 +41,7 @@ async function Movies_masvaloraciones() {
         $('#Movies_recomendaciones  ').html('');
         for (let i = 0; i < result.results.length; i++) {
             $('#Movies_recomendaciones  ').append(`      
-            <div class="max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
+            <div class="cursor-pointer max-w-sm hover:scale-105 ease-out duration-300  border border-gray-200 rounded-lg shadow-md bg-gray-800 border-gray-700">
                 <a  onclick="contenido_modal('${result.results[i].id}')">
                     <img class="rounded-t-lg" src="https://image.tmdb.org/t/p/w500/${result.results[i].poster_path}" alt="" />
                 </a>
@@ -73,7 +73,9 @@ async function Category() {
 }
 
 async function contenido_modal(id_video) {
+
     modal.show();
+    clear_modal();
     let json_video = await $.ajax({
         url: `https://api.themoviedb.org/3/movie/${id_video}/videos?api_key=6f0b8be39a25f8460c0779a846620e36&language=en-US`,
         type: 'GET',
@@ -82,11 +84,74 @@ async function contenido_modal(id_video) {
         url: `https://api.themoviedb.org/3/movie/${id_video}?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-ES`,
         type: 'GET',
     });
+
+    let similares = await $.ajax({
+        url: `https://api.themoviedb.org/3/movie/${id_video}/similar?api_key=6f0b8be39a25f8460c0779a846620e36&language=es-ES&page=1`,
+        type: 'GET',
+    });
+
+    let reviews = await $.ajax({
+        url: `https://api.themoviedb.org/3/movie/${id_video}/reviews?api_key=4d9c9de3bdf0d3b6837c49c086e3b190`,
+        type: 'GET',
+    });
+
+
+
+
+
     $('#titulo').html(`${json_info.title}`);
     $('#video').html(`<iframe width="100%" height="450" src="https://www.youtube.com/embed/${json_video.results[0].key}?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
-    $('#descripcion').html(`${json_info.overview}`);
-}
+    
+    let descripcion = '';
+    descripcion = json_info.overview;
+    if (descripcion == "") {
+        descripcion = "Sin Descripcion En Español";
+        console.log('descripcion');
+    }
+    $('#descripcion').html(`${descripcion}`);
 
+    for (let i = 0; i < similares.results.length; i++) {
+        $('#similares').append(`<div onclick="contenido_modal('${similares.results[i].id}')" class='rounded-lg border border-gray-600 hover:border-gray-400 transition-color cursor-pointer flex w-full items-center gap-2'><img  class="object-cover rounded-lg  w-16 " src="https://image.tmdb.org/t/p/w500${similares.results[i].poster_path}" alt="">
+        <div>${similares.results[i].title}<div class="flex items-center">
+        <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+        <p class="ml-2 text-sm font-bold text-white">${similares.results[i].vote_average}</p>
+        <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+        <a href="#" class="text-sm font-medium  underline hover:no-underline text-white">${similares.results[i].vote_count} reviews</a>
+        </div>`);
+    }
+
+    let img = "";
+
+
+    for (let i = 0; i < reviews.results.length; i++) {
+        img = reviews.results[i].author_details.avatar_path;
+        img_validar = img.split('/');
+        if (img_validar.length != 6) {
+            img = `https://www.gravatar.com/avatar/${img}`;
+        } else {
+            img = img.slice(1, -1);
+            img = img;
+        }
+
+        $('#reviews').append(`<div class="flex flex-row items-center">
+    <div class='flex-col items-center flex gap-1'>
+        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+        <img class="rounded-full" src="${img}" alt="">
+        </div>
+      
+        </div>
+        <div class="relative ml-3 text-sm bg-slate-900 py-2 px-4 shadow rounded-xl">
+        <div class="text-base font-bold">
+        ${reviews.results[i].author}
+        </div>
+          <div class="text-sm ">
+          ${reviews.results[i].content}
+          </div>
+        </div>
+      </div>`);
+    }
+
+}
 
 function clear_modal() {
 
@@ -100,5 +165,9 @@ function clear_modal() {
                 <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
         <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
     </div>`);
-    
+
+    $('#similares').html('');
+    $('#reviews').html('');
+
+
 }
